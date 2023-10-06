@@ -1,0 +1,38 @@
+let loadcart = () => {
+  let tableRef = document.getElementById("cartTableBody");
+  let cartData = JSON.parse(localStorage.getItem("cart"));
+  let footRef = document.getElementById("tableFooter");
+
+  let tbody = "";
+  let total = 0;
+  let sn = 0;
+  for (let item of cartData) {
+    sn += 1;
+    total = total + item.quantity * item.price;
+    tbody += `<tr>
+      <th scope="row">${sn}</th>
+      <td>${item.title}</td>
+      <td><div class = "d-md-flex">
+      <input
+      type="button"
+      value="-"
+      class="button-minus border rounded-circle icon-shape icon-sm mx-1"
+      data-field="quantity"
+      onclick = "remove(${item.id})"
+    />
+    <p id="quantity${item.id}">${item.quantity}</p>
+    <input
+      type="button"
+      value="+"
+      class="button-plus border rounded-circle "
+      onclick = "addToCart(${item.id})"
+      data-field="quantity"
+    />
+      </div></td>
+      <td>$${item.price * item.quantity}</td>
+      </tr>`;
+  }
+
+  footRef.innerHTML = `<td colspan = "3" class="text-end">Total =</td> <td>$${total}</td>`;
+  tableRef.innerHTML = tbody;
+};
